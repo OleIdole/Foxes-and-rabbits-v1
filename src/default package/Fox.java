@@ -26,6 +26,8 @@ public class Fox
     private static final int RABBIT_FOOD_VALUE = 9;
     // A shared random number generator to control breeding.
     private static final Random rand = Randomizer.getRandom();
+    // The fox's max food level, can't exceed this by eating.
+    private static final int MAX_FOOD_LEVEL = 20;
     
     // Individual characteristics (instance fields).
 
@@ -154,21 +156,28 @@ public class Fox
      */
     private Location findFood()
     {
+        Location where = null;
         List<Location> adjacent = field.adjacentLocations(location);
         Iterator<Location> it = adjacent.iterator();
         while(it.hasNext()) {
-            Location where = it.next();
+            where = it.next();
             Object animal = field.getObjectAt(where);
             if(animal instanceof Rabbit) {
                 Rabbit rabbit = (Rabbit) animal;
                 if(rabbit.isAlive()) { 
                     rabbit.setDead();
-                    foodLevel = RABBIT_FOOD_VALUE;
-                    return where;
+                    if(foodLevel + RABBIT_FOOD_VALUE <= MAX_FOOD_LEVEL)
+                        {
+                            foodLevel += RABBIT_FOOD_VALUE;
+                        }
+                    else
+                    {
+                        foodLevel = MAX_FOOD_LEVEL;
+                    }
                 }
             }
         }
-        return null;
+        return where;
     }
     
     /**
