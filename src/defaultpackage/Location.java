@@ -1,4 +1,4 @@
-package defaultpackage;
+package defaultPackage;
 
 /**
  * Represent a location in a rectangular grid.

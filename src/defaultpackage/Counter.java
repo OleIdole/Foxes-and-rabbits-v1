@@ -1,6 +1,4 @@
-package defaultpackage;
-
-import java.awt.Color;
+package defaultPackage;
 
 /**
  * Provide a counter for a participant in the simulation.

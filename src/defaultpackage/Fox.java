@@ -1,4 +1,4 @@
-package defaultpackage;
+package defaultPackage;
 
 import java.util.List;
 import java.util.Iterator;
@@ -65,17 +65,18 @@ public class Fox extends Animal
      * @param field The field currently occupied.
      * @param newFoxes A list to return newly born foxes.
      */
-    public void hunt(List<Fox> newFoxes)
+    @Override
+    public void act(List<Animal> newFoxes)
     {
         incrementAge();
         incrementHunger();
-        if(super.isAlive()) {
+        if(isAlive()) {
             giveBirth(newFoxes);            
             // Move towards a source of food if found.
             Location newLocation = findFood();
             if(newLocation == null) { 
                 // No food found - try to move to a free location.
-                newLocation = super.getField().freeAdjacentLocation(super.getLocation());
+                newLocation = getField().freeAdjacentLocation(getLocation());
             }
             // See if it was possible to move.
             if(newLocation != null) {
@@ -120,11 +121,11 @@ public class Fox extends Animal
     private Location findFood()
     {
         Location where = null;
-        List<Location> adjacent = super.getField().adjacentLocations(super.getLocation());
+        List<Location> adjacent = getField().adjacentLocations(getLocation());
         Iterator<Location> it = adjacent.iterator();
         while(it.hasNext()) {
             where = it.next();
-            Object animal = super.getField().getObjectAt(where);
+            Object animal = getField().getObjectAt(where);
             if(animal instanceof Rabbit) {
                 Rabbit rabbit = (Rabbit) animal;
                 if(rabbit.isAlive()) { 
@@ -148,16 +149,16 @@ public class Fox extends Animal
      * New births will be made into free adjacent locations.
      * @param newFoxes A list to return newly born foxes.
      */
-    private void giveBirth(List<Fox> newFoxes)
+    private void giveBirth(List<Animal> newAnimals)
     {
         // New foxes are born into adjacent locations.
         // Get a list of adjacent free locations.
-        List<Location> free = super.getField().getFreeAdjacentLocations(super.getLocation());
+        List<Location> free = getField().getFreeAdjacentLocations(getLocation());
         int births = breed();
         for(int b = 0; b < births && free.size() > 0; b++) {
             Location loc = free.remove(0);
-            Fox young = new Fox(false, super.getField(), loc);
-            newFoxes.add(young);
+            Fox young = new Fox(false, getField(), loc);
+            newAnimals.add(young);
         }
     }
         

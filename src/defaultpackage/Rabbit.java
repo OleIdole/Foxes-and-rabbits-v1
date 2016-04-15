@@ -1,4 +1,4 @@
-package defaultpackage;
+package defaultPackage;
 
 import java.util.List;
 import java.util.Random;
@@ -38,6 +38,7 @@ public class Rabbit extends Animal
     public Rabbit(boolean randomAge, Field field, Location location)
     {
         super(field, location);
+        
         age = 0;
         if(randomAge) {
             age = rand.nextInt(MAX_AGE);
@@ -49,13 +50,14 @@ public class Rabbit extends Animal
      * around. Sometimes it will breed or die of old age.
      * @param newRabbits A list to return newly born rabbits.
      */
-    public void run(List<Rabbit> newRabbits)
+    @Override
+    public void act(List<Animal> newRabbits)
     {
         incrementAge();
-        if(super.isAlive()) {
+        if(isAlive()) {
             giveBirth(newRabbits);            
             // Try to move into a free location.
-            Location newLocation = super.getField().freeAdjacentLocation(super.getLocation());
+            Location newLocation = getField().freeAdjacentLocation(getLocation());
             if(newLocation != null) {
                 setLocation(newLocation);
             }
@@ -82,16 +84,16 @@ public class Rabbit extends Animal
      * New births will be made into free adjacent locations.
      * @param newRabbits A list to return newly born rabbits.
      */
-    private void giveBirth(List<Rabbit> newRabbits)
+    private void giveBirth(List<Animal> newAnimals)
     {
         // New rabbits are born into adjacent locations.
         // Get a list of adjacent free locations.
-        List<Location> free = super.getField().getFreeAdjacentLocations(super.getLocation());
+        List<Location> free = getField().getFreeAdjacentLocations(getLocation());
         int births = breed();
         for(int b = 0; b < births && free.size() > 0; b++) {
             Location loc = free.remove(0);
-            Rabbit young = new Rabbit(false, super.getField(), loc);
-            newRabbits.add(young);
+            Rabbit young = new Rabbit(false, getField(), loc);
+            newAnimals.add(young);
         }
     }
         
