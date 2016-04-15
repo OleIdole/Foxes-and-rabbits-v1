@@ -1,3 +1,5 @@
+package defaultpackage;
+
 import java.util.Random;
 import java.util.List;
 import java.util.ArrayList;
@@ -26,6 +28,7 @@ public class Simulator
     // Lists of animals in the field. Separate lists are kept for ease of iteration.
     private List<Rabbit> rabbits;
     private List<Fox> foxes;
+    private List<Animal> animals;
     // The current state of the field.
     private Field field;
     // The current step of the simulation.
@@ -65,6 +68,7 @@ public class Simulator
         
         rabbits = new ArrayList<Rabbit>();
         foxes = new ArrayList<Fox>();
+        animals = new ArrayList<>();
         field = new Field(depth, width);
 
         // Create a view of the state of each location in the field.
@@ -106,6 +110,17 @@ public class Simulator
     {
         step++;
 
+                // Provide space for newborn animals.
+        List<Animal> newAnimals = new ArrayList<>();        
+        // Let all animals act.
+        for(Iterator<Animal> it = animals.iterator(); it.hasNext(); ) {
+            Animal animal = it.next();
+            animal.act(newAnimals);
+            if(! animal.isAlive()) {
+                it.remove();
+            }
+        }
+        
         // Provide space for newborn rabbits.
         List<Rabbit> newRabbits = new ArrayList<Rabbit>();        
         // Let all rabbits act.
@@ -131,6 +146,7 @@ public class Simulator
         // Add the newly born foxes and rabbits to the main lists.
         rabbits.addAll(newRabbits);
         foxes.addAll(newFoxes);
+        animals.addAll(newAnimals);
 
         view.showStatus(step, field);
     }
@@ -143,6 +159,7 @@ public class Simulator
         step = 0;
         rabbits.clear();
         foxes.clear();
+        animals.clear();
         populate();
         
         // Show the starting state in the view.

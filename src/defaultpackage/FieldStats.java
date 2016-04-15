@@ -1,4 +1,5 @@
-import java.awt.Color;
+package defaultpackage;
+
 import java.util.HashMap;
 
 /**

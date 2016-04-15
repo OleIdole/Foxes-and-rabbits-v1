@@ -1,3 +1,5 @@
+package defaultpackage;
+
 import java.util.Random;
 
 /**
